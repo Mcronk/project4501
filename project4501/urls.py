@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^profile/', views.profile),
     url(r'^search/', views.search),
-    url(r'^signup/', views.signup),	
+    url(r'^signup/', views.signup),
+    url(r'^appointment/', views.appointment),
 ]

@@ -13,3 +13,5 @@ def profile(request):
 def signup(request):
     return render(request, 'signup.html')
 
+def appointment(request):
+    return render(request, 'appointment.html')
