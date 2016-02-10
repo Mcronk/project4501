@@ -3,11 +3,6 @@ from django.db.models import Count, Min, Sum, Avg, Max
 from datetime import timedelta
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.db import models
-from django.db.models import Count, Min, Sum, Avg, Max
-from datetime import timedelta
-from django.contrib.auth.models import User
-from django.utils import timezone
 
 class Course(models.Model):
 	class_id = models.IntegerField(primary_key = True)
