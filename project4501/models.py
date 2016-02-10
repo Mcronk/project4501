@@ -46,18 +46,3 @@ class Session(models.Model):
 	student = models.ForeignKey('User', related_name = 'student')
 	course = models.ForeignKey('Course')
 
-class Message(model.Model):
-	message_id = models.IntegerField(primary_key = True)
-	content = models.TextField()
-	sender = models.ForeignKey('User', related_name = 'sender')
-	receiver = models.ForeignKey('User', related_name = 'receiver')
-
-class Application(model.Model):
-	application_id = models.IntegerField(primary_key = True)
-	price = models.IntegerField(default = -1)
-	content = models.TextField(blank = True)
-	tutor = models.ForeignKey('User', related_name = 'tutor')
-	student = models.ForeignKey('User', related_name = 'student')
-	course = models.ForeignKey('Course')
-
-

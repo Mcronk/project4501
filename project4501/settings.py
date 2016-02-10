@@ -38,6 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'project4501',
+    'rest_framework',
+    'mod_wsgi.server',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,3 +109,8 @@ STATICFILES_DIRS = [
 	os.path.join(BASE_DIR, 'project4501/static/'),	
 ]
 STATIC_URL = '/static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
+}
