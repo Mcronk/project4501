@@ -17,33 +17,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from . import views
-
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('user_id', 'name', 'password', 'email', 'phone', 'description', 'grade', 'courses')
-
-    def create(self, validated_data):
-        """
-        Create and return a new `Snippet` instance, given the validated data.
-        """
-        return Snippet.objects.create(**validated_data)
-
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.password = validated_date.get('password', instance.password)
-        instance.email = validated_data.get('email', instance.email)
-        instance.phone = validated_data.get('phone', instance.phone)
-        instance.description = validated_data.get('description', instance.description)
-        instance.grade = validated_data.get('grade', instance.grade)
-        instance.save()
-        return instance
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
+from project4501.views import UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -57,4 +31,5 @@ urlpatterns = [
     url(r'^signup/', views.signup),
     url(r'^appointment/', views.appointment),
     url(r'^user/', include(router.urls)),
+    url(r'^user_list/',views.user_list),
 ]
