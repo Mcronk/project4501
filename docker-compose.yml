@@ -1,5 +1,26 @@
-isa-web:
+#mysql:
+#   image: mysql:5.7.10
+#   environment:
+#    MYSQL_DATABASE: cs4501
+#    MYSQL_USER: www
+#    DATABASE_PASSWORD: keystone55
+#    MYSQL_ROOT_PASSWORD: keystone55
+#    command: bash -c "www'@'%' identified by 'keystone55' &&  create database cs4501 character set utf8 && grant all on cs4501.* to 'www'@'%' && mod_wsgi-express start-server project4501/wsgi.py"
+#"
+#when switching to four contains, check to make sure the call to start server is in the correct location.
+#models:
+#  image: tp33/django:1.2
+#   links:
+#     - mysql:db
+#   command: bash -c "pip install djangorestframework && git clone https://github.com/Mcronk/project4501-models.git && cd project4501 && python manage.py migrate && python manage.py runserver"
+#exp:
+#   image: tp33/django:1.2
+#   links:
+#     - models:models-api
+#   command: bash -c "pip install djangorestframework && git clone https://github.com/Mcronk/project4501-exp.git && cd project4501 && python manage.py migrate && python manage.py runserver"
+web:
    image: tp33/django:1.2
    external_links:
+#following lab2, change mysql:db to exp:exp-api and change project4501.git to project 4501-web.git
      - mysql:db
-   command: bash -c "git clone https://github.com/Mcronk/project4501.git && cd project4501 && python manage.py migrate && python manage.py runserver"
+   command: bash -c "pip install djangorestframework && git clone https://github.com/Mcronk/project4502.git && cd project4501 && python manage.py migrate && python manage.py runserver"
