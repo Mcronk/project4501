@@ -32,4 +32,8 @@ urlpatterns = [
     url(r'^appointment/', views.appointment),
     url(r'^user/', include(router.urls)),
     url(r'^user_list/',views.user_list),
+    url(r'^course_list/',views.course_list),
+    url(r'^review_list/',views.review_list),
+    url(r'^additioninfo_list/', views.additioninfo_list),
+    #(?P<pk>[0-9]+)/$
 ]
