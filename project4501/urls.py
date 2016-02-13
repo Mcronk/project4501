@@ -35,5 +35,8 @@ urlpatterns = [
     url(r'^course_list/',views.course_list),
     url(r'^review_list/',views.review_list),
     url(r'^additioninfo_list/', views.additioninfo_list),
+    url(r'^session_list/', views.session_list),
+    url(r'^message_list/', views.message_list),
+    url(r'^application_list/', views.application_list),
     #(?P<pk>[0-9]+)/$
 ]
