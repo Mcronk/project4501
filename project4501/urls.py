@@ -18,6 +18,7 @@ from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from . import views
 from project4501.views import UserViewSet
+from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -31,9 +32,19 @@ urlpatterns = [
     url(r'^signup/', views.signup),
     url(r'^appointment/', views.appointment),
     url(r'^user/', include(router.urls)),
-    url(r'^user_list/',views.user_list),
+    url(r'^users/$',views.user_list),
+    url(r'^users/(?P<uid>[0-9]+)$', views.user_detail),
+
+
     url(r'^course_list/',views.course_list),
     url(r'^review_list/',views.review_list),
     url(r'^additioninfo_list/', views.additioninfo_list),
     #(?P<pk>[0-9]+)/$
 ]
+
+
+
+
+
+
+

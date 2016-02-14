@@ -1,28 +1,35 @@
 from django.http import HttpResponse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+from project4501.serializers import UserSerializer
+from project4501.models import User, Course, Review, AdditionInfo, Session, Message, Application
+
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 from rest_framework import routers, serializers, viewsets
-from project4501.models import User, Course, Review, AdditionInfo, Session, Message, Application
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ('user_id', 'name', 'password', 'email', 'phone', 'description', 'grade', 'courses')
 
-    def create(self, validated_data):
-        return User.objects.create(**validated_data)
 
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.password = validated_date.get('password', instance.password)
-        instance.email = validated_data.get('email', instance.email)
-        instance.phone = validated_data.get('phone', instance.phone)
-        instance.description = validated_data.get('description', instance.description)
-        instance.grade = validated_data.get('grade', instance.grade)
-        instance.save()
-        return instance
+# class UserSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = User
+#         fields = ('user_id', 'name', 'password', 'email', 'phone', 'description', 'grade')
+
+#     def create(self, validated_data):
+#         return User.objects.create(**validated_data)
+
+#     def update(self, instance, validated_data):
+#         instance.name = validated_data.get('name', instance.name)
+#         instance.password = validated_date.get('password', instance.password)
+#         instance.email = validated_data.get('email', instance.email)
+#         instance.phone = validated_data.get('phone', instance.phone)
+#         instance.description = validated_data.get('description', instance.description)
+#         instance.grade = validated_data.get('grade', instance.grade)
+#         instance.save()
+#         return instance
 
 class CourseSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -104,22 +111,96 @@ def signup(request):
 def appointment(request):
     return render(request, 'appointment.html')
 
-def user_list(request):
-    #user = User.get(pk=pk)
+
+#OLD_USER: listing all the existing users, or creating a new user.
+# def user_list(request):
+#     if request.method == 'GET':
+#         users = User.objects.all()
+#         serializer = UserSerializer(users, many = True, context={'request': request})
+#         return JSONResponse(serializer.data)
+#     elif request.method == 'PUT':
+#         data = JSONParser.parse(request)
+#         serializer = UserSerializer(data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return JSONResponse(serializer.data, status=201)
+#         return JSONResponse(serializer.errors, status=400) 
+#     #elif request.method == 'DELETE':
+#     #    user.delete()
+#     #    return HttpResponse(status=204)
+
+#USER: listing all the existing users, or creating a new user.
+@api_view(['GET', 'POST'])
+def user_list(request, format=None):
+    """
+    List all users, or create a new user.
+    """
     if request.method == 'GET':
         users = User.objects.all()
-        serializer = UserSerializer(users, many = True)
-        return JSONResponse(serializer.data)
-    elif request.method == 'PUT':
-        data = JSONParser.parse(request)
-        serializer = UserSerializer(data=data)
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        user = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400) 
-    #elif request.method == 'DELETE':
-    #    user.delete()
-    #    return HttpResponse(status=204)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#OLD_USER: used to retrieve, update or delete the individual user.
+# @csrf_exempt
+# def user_detail(request, uid):
+#     try:
+#         user = User.objects.get(user_id=uid)
+#     except User.DoesNotExist:
+#         return HttpResponse(status=404)
+
+#     if request.method == 'GET':
+#         serializer = UserSerializer(user)
+#         return JSONResponse(serializer.data)
+
+#     elif request.method == 'PUT':
+#         data = JSONParser().parse(request)
+#         serializer = UserSerializer(user, data=data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return JSONResponse(serializer.data)
+#         return JSONResponse(serializer.errors, status=400)
+
+#     elif request.method == 'DELETE':
+#         user.delete()
+#         return HttpResponse(status=204)
+
+
+#USER: used to retrieve, update or delete the individual user.
+@api_view(['GET', 'PUT', 'DELETE'])
+def user_detail(request, uid, format=None):
+    """
+    Retrieve, update or delete a user instance.
+    """
+    try:
+        user = User.objects.get(user_id=uid)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+
 
 def course_list(request):
     #course = Course.get(pk=pk)
