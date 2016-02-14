@@ -23,4 +23,4 @@ web:
    external_links:
 #following lab2, change mysql:db to exp:exp-api and change project4501.git to project 4501-web.git
      - mysql:db
-   command: bash -c "pip install djangorestframework && git clone https://github.com/Mcronk/project4502.git && cd project4501 && python manage.py migrate && python manage.py runserver"
+   command: bash -c "pip install djangorestframework && git clone https://github.com/Mcronk/project4501.git && cd project4501 && python manage.py migrate && python manage.py runserver"
