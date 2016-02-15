@@ -35,8 +35,9 @@ urlpatterns = [
     url(r'^users/$',views.user_list),
     url(r'^users/(?P<uid>[0-9]+)$', views.user_detail),
 
+    url(r'^courses/$',views.course_list.as_view()),
+    url(r'^courses/(?P<pk>[0-9]+)/$', views.course_detail.as_view()),
 
-    url(r'^course_list/',views.course_list),
     url(r'^review_list/',views.review_list),
     url(r'^additioninfo_list/', views.additioninfo_list),
     url(r'^session_list/', views.session_list),
