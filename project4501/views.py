@@ -2,8 +2,11 @@ from django.http import HttpResponse
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-from project4501.serializers import UserSerializer, CourseSerializer, ReviewSerializer, AdditionInfoSerializer, SessionSerializer, MessageSerializer, ApplicationSerializer
-from project4501.models import User, Course, Review, AdditionInfo, Session, Message, Application
+from project4501.serializers import UserSerializer, CourseSerializer, ReviewSerializer, SessionSerializer, MessageSerializer, ApplicationSerializer
+from project4501.models import User, Course, Review, Session, Message, Application
+# from project4501.serializers import UserSerializer, CourseSerializer, ReviewSerializer, AdditionInfoSerializer, SessionSerializer, MessageSerializer, ApplicationSerializer
+# from project4501.models import User, Course, Review, AdditionInfo, Session, Message, Application
+
 from django.http import Http404
 from rest_framework.views import APIView
 
@@ -35,12 +38,12 @@ def user_list(request, format=None):
 
 #USER: used to retrieve, update or delete the individual user.
 @api_view(['GET', 'PUT', 'DELETE'])
-def user_detail(request, uid, format=None):
+def user_detail(request, pk, format=None):
     """
     Retrieve, update or delete a user instance.
     """
     try:
-        user = User.objects.get(user_id=uid)
+        user = User.objects.get(id=pk)
     except User.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -85,9 +88,9 @@ class SessionViewSet(viewsets.ModelViewSet):
     queryset = Session.objects.all()
     serializer_class = SessionSerializer
 
-class AdditionInfoViewSet(viewsets.ModelViewSet):
-    queryset = AdditionInfo.objects.all()
-    serializer_class = AdditionInfoSerializer
+# class AdditionInfoViewSet(viewsets.ModelViewSet):
+#     queryset = AdditionInfo.objects.all()
+#     serializer_class = AdditionInfoSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()

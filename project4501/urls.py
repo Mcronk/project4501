@@ -33,7 +33,7 @@ urlpatterns = [
     url(r'^appointment/', views.appointment),
     url(r'^user/', include(router.urls)),
     url(r'^users/$',views.user_list),
-    url(r'^users/(?P<uid>[0-9]+)$', views.user_detail),
+    url(r'^users/(?P<pk>[0-9]+)$', views.user_detail),
 
     url(r'^courses/$',views.course_list.as_view()),
     url(r'^courses/(?P<pk>[0-9]+)/$', views.course_detail.as_view()),
