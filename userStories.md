@@ -25,3 +25,5 @@
   3. As a user, I want to be able to change my password.
 
 
+# Model Graph
+![alt tag](https://github.com/Mcronk/project4501/blob/master/ModelGraph_cs4501.png)
