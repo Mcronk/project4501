@@ -59,4 +59,3 @@ class Application(models.Model):
 	tutor = models.ForeignKey('User', related_name = 'applicationtutor')
 	student = models.ForeignKey('User', related_name = 'applicationstudent')
 	course = models.ForeignKey('Course')
-
