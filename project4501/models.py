@@ -23,10 +23,19 @@ class Course(models.Model):
 	popularity = models.IntegerField(default = 0)
 	qualification = models.CharField(max_length=30, blank = True)
 	available_time = models.DateTimeField(default=datetime.now, blank=True)
+	#should be a list of available time
 	price = models.IntegerField(default = -1)
 
 	tutor = models.ForeignKey('User', related_name = 'tutoring_courses', null=True)
-	student = models.ForeignKey('User', related_name = 'taking_courses', null=True)
+	# student = models.ForeignKey('User', related_name = 'taking_courses', null=True)
+
+class Session(models.Model):
+	id = models.IntegerField(primary_key = True)
+	time = models.DateTimeField('Class Time')
+	
+	# tutor = models.ForeignKey('User', related_name = 'tutor')
+	student = models.ManyToManyField('User', related_name = 'student_session')
+	course = models.ForeignKey('Course', related_name = 'course_session')
 
 class Review(models.Model):
 	id = models.IntegerField(primary_key = True)
@@ -44,13 +53,6 @@ class Review(models.Model):
 # 	course = models.ForeignKey('Course')
 # 	tutor = models.ForeignKey('User')
 
-class Session(models.Model):
-	id = models.IntegerField(primary_key = True)
-	time = models.DateTimeField('Class Time')
-	
-	# tutor = models.ForeignKey('User', related_name = 'tutor')
-	student = models.ForeignKey('User', related_name = 'student_session')
-	course = models.ForeignKey('Course', related_name = 'course_session')
 
 class Message(models.Model):
 	id = models.IntegerField(primary_key = True)

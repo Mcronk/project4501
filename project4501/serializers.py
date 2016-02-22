@@ -10,27 +10,58 @@ class CourseSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
 	tutoring_courses = CourseSerializer(many=True)
-	taking_courses = CourseSerializer(many=True)
+	# taking_courses = CourseSerializer(many=True)
 	
 	class Meta:
 		model = User
 		#ommiting courses temporarily
-		fields = ('id', 'name', 'password', 'email', 'phone', 'description', 'grade', 'tutoring_courses', 'taking_courses')
+		fields = ('id', 'name', 'password', 'email', 'phone', 'description', 'grade', 'tutoring_courses')
 	
 	def create(self, validated_data):
 		tutoring_courses_data = validated_data.pop('tutoring_courses')
-		taking_courses_data = validated_data.pop('taking_courses')
-
+		# taking_courses_data = validated_data.pop('taking_courses')
 		user = User.objects.create(**validated_data)
 
-		# for tutoring_course_data in tutoring_courses_data:
-		# 	Course.objects.create(tutor=user, **tutoring_course_data)
+		for tutoring_course_data in tutoring_courses_data:
+			Course.objects.create(tutor=user, **tutoring_course_data)
 		# for taking_course_data in taking_courses_data:
 		# 	course = Course.objects.get(id = taking_course_data[id])
 		# 	course.student = user
 		# 	course.save()
 		return user
 
+	def update(self, instance, validated_data):
+		 # Update the book instance
+		instance.name = validated_data.get('name', instance.name)
+		instance.password = validated_data.get('password', instance.password)
+		instance.email = validated_data.get('email', instance.email)
+		instance.phone = validated_data.get('phone', instance.phone)
+		instance.description = validated_data.get('description', instance.description)
+		instance.grade = validated_data.get('grade', instance.grade)
+		# instance.save()
+
+		# Delete any course not included in the request
+		course_ids = [item['id'] for item in validated_data['tutoring_courses']]
+		for course in instance.tutoring_courses.all():
+			if course.id not in course_ids:
+				course.delete()
+		
+		# Create or update page instances that are in the request
+		tutoring_courses_data = validated_data.pop('tutoring_courses')
+		for tutoring_course_data in tutoring_courses_data:
+			# instance.name = 'has course_data'
+			sc = Course.objects.filter(id = tutoring_course_data['id'])
+			if sc.count() > 0:
+			# if Course.objects.filter(id = tutoring_course_data['id']).exists():
+				# instance.name = 'exist'
+				Course.objects.filter(id = tutoring_course_data['id']).update(tutor=instance, **tutoring_course_data)
+			else:
+				# instance.name = 'inexist'
+				course = Course.objects.create(tutor=instance, **tutoring_course_data)
+				course.save()
+
+		instance.save()								
+		return instance
 
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:

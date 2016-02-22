@@ -62,6 +62,9 @@ def user_detail(request, pk, format=None):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+
+
 #COURSE: listing all the existing courses, or creating a new course.
 class course_list(generics.ListCreateAPIView):
     queryset = Course.objects.all()
