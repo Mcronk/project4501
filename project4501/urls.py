@@ -19,14 +19,18 @@ from rest_framework import routers, serializers, viewsets
 from . import views
 from project4501.views import UserViewSet
 from rest_framework.urlpatterns import format_suffix_patterns
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
+
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    url(r'^$', views.index, name='index'),
+    url(r'^index/', views.index, name='index'),
+    url(r'^$', views.base),
     url(r'^profile/', views.profile),
     url(r'^search/', views.search),
     url(r'^signup/', views.signup),
@@ -44,9 +48,7 @@ urlpatterns = [
     url(r'^message_list/', views.message_list),
     url(r'^application_list/', views.application_list),
     #(?P<pk>[0-9]+)/$
-]
-
-
+] 
 
 
 
